@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: vedic-mahajanapada-mock
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: IP_HASH_SECRET
+        generateValue: true
+      - key: DATA_DIR
+        value: /var/data
+    disk:
+      name: attempt-counter-data
+      mountPath: /var/data
+      sizeGB: 1

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSC CGL / CHSL Mock Test - Vedic Age & Mahajanapadas</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#172033;--muted:#64748b;--accent:#2457c5;--line:#dce3ef;--good:#137547;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:#14284b;color:white;padding:24px 16px}header .wrap,main{max-width:980px;margin:auto}h1{font-size:clamp(22px,4vw,32px);margin:0 0 6px}header p{margin:0;color:#d7e3ff}
+main{padding:18px 14px 48px}.panel,.question{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 3px 12px #1720330a}
+.meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}.pill{background:#eaf0ff;color:#214da8;border-radius:99px;padding:5px 10px;font-size:13px;font-weight:700}
+.stats{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:14px}.timer{font-weight:800;color:#9a3412;font-variant-numeric:tabular-nums}
+h2{font-size:20px;margin:0 0 8px}.instructions{color:var(--muted);margin:8px 0 0}
+.qhead{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:13px;font-weight:700;margin-bottom:8px}.question h3{font-size:17px;line-height:1.45;margin:0 0 13px}
+.options{display:grid;gap:9px}.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer}.opt:hover{border-color:#8aa7ed;background:#f8faff}.opt input{margin-top:4px;accent-color:var(--accent)}.opt.selected{border-color:var(--accent);background:#f1f5ff}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.btn{border:0;border-radius:10px;padding:11px 17px;font-weight:700;cursor:pointer;font-size:15px}.primary{background:var(--accent);color:white}.secondary{background:#e8edf6;color:#23324d}.danger{background:#fee4e2;color:#9b1c16}.btn:disabled{opacity:.5;cursor:not-allowed}
+.nav{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.nav button{width:36px;height:36px;border:1px solid var(--line);border-radius:8px;background:white;cursor:pointer}.nav button.done{background:#e5edff;border-color:#9db5ef}.nav button.current{outline:2px solid var(--accent)}
+#result{display:none}.score{font-size:30px;font-weight:850;color:var(--accent)}.review{border-top:1px solid var(--line);padding:14px 0}.review p{margin:6px 0}.correct{color:var(--good);font-weight:700}.incorrect{color:var(--bad);font-weight:700}.explain{color:#46556d;font-size:14px}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:22px}
+@media(max-width:600px){.panel,.question{padding:14px}.meta{align-items:flex-start}.btn{flex:1}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>SSC CGL / CHSL Mock Test</h1><p>Ancient History • Vedic Age & Mahajanapadas • Moderate to Hard</p></div></header>
+<main>
+<section class="panel">
+ <div class="meta"><span class="pill">30 MCQs · 30 minutes</span><span class="timer" id="timer">30:00</span></div>
+ <p class="instructions" id="attemptInfo">Checking attempt count…</p>
+ <h2>Instructions</h2>
+ <div class="stats"><span>+2 for correct</span><span>−0.5 for incorrect</span><span>0 for unattempted</span><span>Maximum: 60 marks</span></div>
+ <p class="instructions">Choose one option for each question. Use the question palette to move around. Submit when finished or when the timer ends. Explanations appear after submission.</p>
+ <div class="nav" id="palette" aria-label="Question navigation"></div>
+ <div class="controls"><button class="btn primary" id="startBtn" onclick="startTest()">Start test</button><button class="btn secondary" onclick="clearCurrent()">Clear response</button><button class="btn danger" onclick="submitTest()">Submit test</button></div>
+</section>
+<div id="quiz"></div>
+<section class="panel" id="result"></section>
+<footer>Practice set based on recurring SSC-style themes and high-probability concepts. These are practice questions, not a claim that every item appeared verbatim in a previous paper.</footer>
+</main>
+<script>
+const questions = [
+{topic:"Vedic Age",q:"Which of the following rivers is most frequently identified with the geographical core of the Early Rigvedic people?",o:["Ganga","Saraswati","Godavari","Narmada"],a:1,e:"The Early Rigvedic region was concentrated in the Sapta-Sindhu area. The Saraswati is prominently praised in the Rigveda; the Ganga has a much smaller presence."},
+{topic:"Vedic Age",q:"The term ‘Gavishti’ in the Rigvedic context is generally associated with:",o:["Ploughing","Search for cows / battle","Royal consecration","A measure of land revenue"],a:1,e:"Gavishti literally relates to the search for cows and came to be used in the sense of battle, reflecting the importance of cattle."},
+{topic:"Vedic Age",q:"Which statement best distinguishes the Later Vedic period from the Early Vedic period?",o:["Iron was entirely unknown in the Later Vedic period","Agriculture and settled territorial kingdoms became more important","The horse disappeared from ritual life","Tribal assemblies became stronger than kingship"],a:1,e:"Later Vedic society saw expansion into the Ganga-Yamuna doab, wider use of iron, greater agricultural production and stronger kingship."},
+{topic:"Vedic Age",q:"In the Later Vedic texts, ‘Shyama Ayas’ or ‘Krishna Ayas’ generally refers to:",o:["Copper","Gold","Iron","Silver"],a:2,e:"Shyama/Krishna Ayas is commonly identified with iron. ‘Lohita Ayas’ is associated with copper in many textbook treatments."},
+{topic:"Vedic Age",q:"Which of the following pairs is incorrectly matched?",o:["Rajasuya — royal consecration","Ashvamedha — horse sacrifice","Vajapeya — associated with chariot race","Agnishtoma — worship of Varuna alone"],a:3,e:"Agnishtoma was a Soma sacrifice, not an exclusive ritual for Varuna. The other pairs are standard associations."},
+{topic:"Vedic Age",q:"The ‘Sabha’ and ‘Samiti’ of the Rigvedic period were:",o:["Only groups of priests","Popular assemblies with political and social functions","Land revenue departments","Military units of the king"],a:1,e:"Sabha and Samiti were important assemblies. Their exact composition and relative roles changed over time, while royal authority strengthened in the Later Vedic age."},
+{topic:"Vedic Age",q:"Which Veda is primarily associated with melodies and chants used during the performance of sacrifices?",o:["Rigveda","Samaveda","Yajurveda","Atharvaveda"],a:1,e:"The Samaveda is chiefly a collection of melodies and chants, many adapted from Rigvedic verses."},
+{topic:"Vedic Age",q:"The priest traditionally associated with the recitation of Rigvedic hymns was the:",o:["Hotri","Udgatri","Adhvaryu","Brahman"],a:0,e:"Hotri recited Rigvedic hymns; Udgatri sang Samaveda chants; Adhvaryu handled sacrificial formulae and procedures; Brahman supervised the ritual."},
+{topic:"Vedic Age",q:"Which pair of texts is correctly matched?",o:["Aitareya — Samaveda Brahmana","Shatapatha — Yajurveda Brahmana","Gopatha — Rigveda Brahmana","Panchavimsha — Atharvaveda Brahmana"],a:1,e:"The Shatapatha Brahmana is associated with the Shukla Yajurveda. Aitareya is Rigvedic, Gopatha is Atharvavedic and Panchavimsha is Samavedic."},
+{topic:"Vedic Age",q:"The famous ‘Purusha Sukta’, which describes the four-fold varna order, occurs in:",o:["Rigveda, 10th Mandala","Samaveda, first part","Atharvaveda, 20th Kanda","Yajurveda, Vajasaneyi Samhita only"],a:0,e:"Purusha Sukta is found in Rigveda 10.90 and is often cited in questions on the origin of the four varnas."},
+{topic:"Vedic Age",q:"Which of the following was NOT a characteristic feature of Later Vedic society?",o:["Increasing importance of agriculture","Growing social stratification","Greater territorial political units","Declining use of iron and disappearance of settled life"],a:3,e:"The Later Vedic period saw increasing use of iron and more settled agricultural communities, not their decline."},
+{topic:"Vedic Age",q:"The term ‘Bali’ in the Vedic context originally referred mainly to:",o:["A regular land survey","An offering or tribute to the chief/king","A coin issued by guilds","A judicial fine fixed by assemblies"],a:1,e:"Bali began as a voluntary offering or tribute and became more regularised as kingship and administration developed."},
+{topic:"Vedic Age",q:"Which Upanishad contains the dialogue between Yajnavalkya and Maitreyi?",o:["Kena","Brihadaranyaka","Katha","Mundaka"],a:1,e:"The Brihadaranyaka Upanishad includes the celebrated dialogue of Yajnavalkya with Maitreyi on immortality and the self."},
+{topic:"Vedic Age",q:"The ‘Painted Grey Ware’ culture is most commonly associated in standard historical accounts with:",o:["Early Vedic phase in the north-west","Later Vedic settlements in the western Ganga-Yamuna doab","Megalithic south India","Harappan urban centres of Gujarat"],a:1,e:"PGW sites are associated especially with the western Ganga-Yamuna doab and are often discussed alongside the Later Vedic phase. The correlation is archaeological, not an exact identity."},
+{topic:"Vedic Age",q:"Which statement about the Rigveda is correct?",o:["It has 10 Mandalas and 1,028 hymns","It has 12 Mandalas and 1,000 hymns","It was composed entirely in the Later Vedic period","Its 10th Mandala is the oldest layer"],a:0,e:"The Rigveda has 10 Mandalas and traditionally 1,028 suktas. Mandalas 2–7 are generally regarded as the older family books; the 10th is relatively later."},
+{topic:"Mahajanapadas",q:"According to the Buddhist text Anguttara Nikaya, how many Mahajanapadas were there?",o:["12","14","16","18"],a:2,e:"The Anguttara Nikaya lists sixteen Mahajanapadas, a standard SSC factual point."},
+{topic:"Mahajanapadas",q:"Which Mahajanapada had its capital at Champa?",o:["Anga","Vatsa","Kashi","Malla"],a:0,e:"Anga's capital was Champa, near present-day Bhagalpur in Bihar. It was eventually absorbed by Magadha."},
+{topic:"Mahajanapadas",q:"Ujjayini and Mahishmati were important centres of which Mahajanapada?",o:["Avanti","Kuru","Panchala","Chedi"],a:0,e:"Avanti had two major centres: Ujjayini in the north and Mahishmati in the south."},
+{topic:"Mahajanapadas",q:"Which one of the following was a gana-sangha rather than a monarchy?",o:["Magadha","Kosala","Vajji","Avanti"],a:2,e:"Vajji was a confederacy of clans, including the Licchavis, and is commonly described as a gana-sangha."},
+{topic:"Mahajanapadas",q:"The capital of the Vatsa Mahajanapada was:",o:["Kaushambi","Rajagriha","Taxila","Shravasti"],a:0,e:"Kaushambi, near modern Prayagraj, was the capital of Vatsa. Udayana is a well-known ruler associated with it."},
+{topic:"Mahajanapadas",q:"Which Mahajanapada was associated with the capital Taxila?",o:["Gandhara","Kamboja","Matsya","Surasena"],a:0,e:"Taxila was the capital of Gandhara and an important centre of learning and trade."},
+{topic:"Mahajanapadas",q:"Which of the following correctly matches the Mahajanapada with its capital?",o:["Kosala — Viratnagar","Matsya — Viratnagar","Surasena — Kaushambi","Kashi — Taxila"],a:1,e:"Matsya's capital was Viratnagar (often identified with modern Bairat in Rajasthan). Kosala had capitals including Shravasti and Saketa; Surasena's was Mathura; Kashi's was Varanasi."},
+{topic:"Mahajanapadas",q:"Bimbisara belonged to which dynasty of Magadha?",o:["Nanda","Haryanka","Maurya","Shishunaga"],a:1,e:"Bimbisara was an important Haryanka ruler. He expanded Magadha through conquest and matrimonial alliances."},
+{topic:"Mahajanapadas",q:"Which ruler is traditionally credited with shifting the capital of Magadha from Rajagriha to Pataliputra?",o:["Bimbisara","Ajatashatru","Udayin","Mahapadma Nanda"],a:2,e:"Udayin (Udayabhadra), son of Ajatashatru, is traditionally credited with establishing Pataliputra as the capital."},
+{topic:"Mahajanapadas",q:"Which pair of rivers formed an important part of the natural boundary of Magadha in its early expansion?",o:["Narmada and Tapi","Ganga and Son","Krishna and Godavari","Ravi and Chenab"],a:1,e:"The Ganga and Son river systems helped define and strengthen Magadha's strategic position around its early core."},
+{topic:"Mahajanapadas",q:"The ancient republic of the Shakyas, associated with Gautama Buddha's birth, had its centre at:",o:["Kapilavastu","Vaishali","Kushinagara","Pava"],a:0,e:"The Shakyas were a gana-sangha; Kapilavastu is associated with the early life of Gautama Buddha."},
+{topic:"Mahajanapadas",q:"Which of the following was NOT one of the sixteen Mahajanapadas?",o:["Asmaka","Kamboja","Lichchhavi","Chedi"],a:2,e:"The standard list includes Asmaka, Kamboja and Chedi. Licchhavis were a prominent clan within the Vajji confederacy, not a separate item in the usual sixteen."},
+{topic:"Mahajanapadas",q:"Asmaka (Assaka), the only Mahajanapada generally placed south of the Vindhyas, was located on the:",o:["Godavari","Kaveri","Narmada","Mahanadi"],a:0,e:"Asmaka was situated in the Godavari valley, making it the southernmost of the sixteen in the standard list."},
+{topic:"Mahajanapadas",q:"Which factor most directly contributed to the rise of Magadha among the Mahajanapadas?",o:["Its lack of mineral resources","Access to iron ore, elephants, fertile land and river routes","Its isolation from trade routes","Its dependence on maritime trade alone"],a:1,e:"Magadha benefited from fertile agriculture, nearby iron deposits, elephants for warfare and riverine transport and trade."},
+{topic:"Mahajanapadas",q:"The capital of the Surasena Mahajanapada was:",o:["Mathura","Indraprastha","Ahichchhatra","Kampilya"],a:0,e:"Mathura was the capital of Surasena. It was an important centre on routes linking north India."},
+{topic:"Mahajanapadas",q:"Which sequence correctly represents the traditional dynastic succession in early Magadha before the Mauryas?",o:["Nanda → Haryanka → Shishunaga","Haryanka → Shishunaga → Nanda","Shishunaga → Maurya → Nanda","Maurya → Haryanka → Nanda"],a:1,e:"The standard sequence is Haryanka, Shishunaga, Nanda and then Maurya. Some early dynastic details vary across traditions."}
+];
+let current=0, answers=Array(questions.length).fill(null), started=false, finished=false, seconds=1800, clock=null;
+const quiz=document.getElementById('quiz'), palette=document.getElementById('palette');
+function render(){
+ quiz.innerHTML='';
+ questions.forEach((q,i)=>{
+  const card=document.createElement('section');card.className='question';card.id='q'+i;card.style.display=i===current?'block':'none';
+  card.innerHTML=`<div class="qhead"><span>QUESTION ${i+1} OF ${questions.length}</span><span>${q.topic}</span></div><h3>${q.q}</h3><div class="options">${q.o.map((v,j)=>`<label class="opt ${answers[i]===j?'selected':''}"><input type="radio" name="q${i}" value="${j}" ${answers[i]===j?'checked':''} ${finished?'disabled':''}><span><b>${String.fromCharCode(65+j)}.</b> ${v}</span></label>`).join('')}</div><div class="controls"><button class="btn secondary" onclick="go(${Math.max(0,i-1)})" ${i===0?'disabled':''}>Previous</button><button class="btn primary" onclick="go(${Math.min(questions.length-1,i+1)})" ${i===questions.length-1?'disabled':''}>Next</button></div>`;
+  card.querySelectorAll('input').forEach(el=>el.addEventListener('change',()=>{answers[i]=Number(el.value);renderPalette();renderQuestionOptions(i)}));
+  quiz.appendChild(card);
+ });
+ renderPalette();
+}
+function renderQuestionOptions(i){const card=document.getElementById('q'+i);card.querySelectorAll('.opt').forEach((el,j)=>{el.classList.toggle('selected',answers[i]===j);el.querySelector('input').checked=answers[i]===j;});}
+function renderPalette(){palette.innerHTML='';questions.forEach((q,i)=>{let b=document.createElement('button');b.textContent=i+1;b.className=(answers[i]!==null?'done ':'')+(i===current?'current':'');b.onclick=()=>go(i);palette.appendChild(b);});}
+function go(i){if(finished)return;current=i;questions.forEach((q,j)=>document.getElementById('q'+j).style.display=j===i?'block':'none');renderPalette();window.scrollTo({top:0,behavior:'smooth'});}
+function clearCurrent(){if(finished)return;answers[current]=null;renderQuestionOptions(current);renderPalette();}
+async function loadAttemptCount(){
+ try{
+  const r=await fetch('/api/me'); if(!r.ok) throw new Error('counter unavailable');
+  const d=await r.json();
+  document.getElementById('attemptInfo').textContent=`Attempts from this public IP: ${d.attempts}`;
+ }catch(e){
+  document.getElementById('attemptInfo').textContent='Attempt counter appears after opening this test from its hosted link while online.';
+ }
+}
+async function recordAttempt(){
+ try{
+  const r=await fetch('/api/attempt',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+  if(!r.ok) throw new Error('counter unavailable');
+  const d=await r.json();
+  document.getElementById('attemptInfo').textContent=`Attempts from this public IP: ${d.attempts}`;
+ }catch(e){
+  document.getElementById('attemptInfo').textContent='Could not reach the online attempt counter. You can still take the test.';
+ }
+}
+function startTest(){if(started||finished)return;started=true;document.getElementById('startBtn').disabled=true;recordAttempt();clock=setInterval(()=>{seconds--;document.getElementById('timer').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');if(seconds<=0)submitTest(true);},1000);}
+function submitTest(auto=false){if(finished)return;if(!auto&&!confirm('Submit your test now?'))return;finished=true;clearInterval(clock);let correct=0,wrong=0,attempted=0;questions.forEach((q,i)=>{if(answers[i]!==null){attempted++;if(answers[i]===q.a)correct++;else wrong++;}});let score=correct*2-wrong*.5;
+ let result=document.getElementById('result');result.style.display='block';result.innerHTML=`<h2>Test result</h2><div class="score">${score.toFixed(1)} / 60</div><div class="stats"><span>Correct: ${correct}</span><span>Incorrect: ${wrong}</span><span>Unattempted: ${questions.length-attempted}</span><span>Attempted: ${attempted}/${questions.length}</span></div><p>${auto?'Time is up.':'You have submitted the test.'} Review each answer and explanation below.</p><div id="reviews"></div><button class="btn primary" onclick="location.reload()">Retake test</button>`;
+ let reviews=document.getElementById('reviews');questions.forEach((q,i)=>{let div=document.createElement('div');div.className='review';let chosen=answers[i];div.innerHTML=`<b>Q${i+1}. ${q.q}</b><p class="${chosen===q.a?'correct':'incorrect'}">${chosen===null?'Not attempted':(chosen===q.a?'Correct':'Incorrect')} · Your answer: ${chosen===null?'—':String.fromCharCode(65+chosen)+'. '+q.o[chosen]}</p><p class="correct">Correct answer: ${String.fromCharCode(65+q.a)}. ${q.o[q.a]}</p><p class="explain">${q.e}</p>`;reviews.appendChild(div);});
+ document.querySelectorAll('input').forEach(x=>x.disabled=true);document.querySelectorAll('.controls button').forEach(x=>x.disabled=true);result.scrollIntoView({behavior:'smooth'});
+}
+render();
+loadAttemptCount();
+</script>
+</body></html>
